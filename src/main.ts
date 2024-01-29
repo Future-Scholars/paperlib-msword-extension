@@ -7,6 +7,7 @@ import path from "path";
 
 import sudo from "sudo-prompt";
 import { WebSocket, WebSocketServer } from "ws";
+import { PaperFilterOptions } from "./utils/filter-option";
 
 const certs = {
   key: `-----BEGIN PRIVATE KEY-----
@@ -215,11 +216,11 @@ class PaperlibMSWordExtension extends PLExtension {
 
   private async _search(params: { query: string }) {
     const result = await PLAPI.paperService.load(
-      {
+      new PaperFilterOptions({
         search: params.query,
         searchMode: "general",
         limit: 10,
-      } as any,
+      }).toString(),
       "addTime",
       "desc",
     );
