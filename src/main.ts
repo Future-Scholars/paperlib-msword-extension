@@ -277,7 +277,7 @@ class PaperlibMSWordExtension extends PLExtension {
     const manifestUrl =
       "https://paperlib.app/distribution/word_addin/manifest.xml";
     const manifestPath = path.join(os.tmpdir(), "manifest.xml");
-    const downloadedPath = await PLAPI.networkTool.download(
+    const downloadedPath = await PLExtAPI.networkTool.download(
       manifestUrl,
       manifestPath,
     );
@@ -310,9 +310,9 @@ class PaperlibMSWordExtension extends PLExtension {
     } else if (os.platform() === "win32") {
       // TODO: Test on win
       const helperUrl =
-        "https://paperlib.app/distribution/word_addin/oaloader.exe";
+        "https://distribution.paperlib.app/word_addin/oaloader.exe";
       const helperPath = path.join(os.tmpdir(), "oaloader.exe");
-      await PLAPI.networkTool.download(helperUrl, helperPath);
+      await PLExtAPI.networkTool.download(helperUrl, helperPath);
       sudo.exec(
         `${helperPath} add ${manifestPath}`,
         { name: "PaperLib" },

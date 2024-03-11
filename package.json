@@ -1,6 +1,6 @@
 {
   "name": "@future-scholars/paperlib-msword-extension",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Paperlib",
   "description": "This extension connects MS Word.",
   "main": "dist/main.js",
@@ -22,7 +22,7 @@
     "bson-objectid": "^2.0.4",
     "mathml-to-latex": "^1.3.0",
     "node-html-parser": "^6.1.11",
-    "paperlib-api": "^0.1.0",
+    "paperlib-api": "^0.1.2",
     "prettier": "^3.1.1",
     "prettier-plugin-organize-imports": "^3.2.4",
     "rollup-plugin-modify": "^3.0.0",
