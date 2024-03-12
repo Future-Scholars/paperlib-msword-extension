@@ -1,6 +1,6 @@
 {
   "name": "@future-scholars/paperlib-msword-extension",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Paperlib",
   "description": "This extension connects MS Word.",
   "main": "dist/main.js",
