@@ -232,8 +232,7 @@ class PaperlibMSWordExtension extends PLExtension {
   }
 
   private async _loadCSLNames() {
-    const cslDir = PLExtAPI.extensionPreferenceService.get(this.id, "cslDir")
-      .value as string;
+    const cslDir = PLExtAPI.extensionPreferenceService.get(this.id, "cslDir") as string;
 
     if (fs.existsSync(cslDir)) {
       const cslFiles = fs.readdirSync(cslDir);
@@ -262,8 +261,7 @@ class PaperlibMSWordExtension extends PLExtension {
   }
 
   private async _loadCSL(name: string) {
-    const cslDir = PLExtAPI.extensionPreferenceService.get(this.id, "cslDir")
-      .value as string;
+    const cslDir = PLExtAPI.extensionPreferenceService.get(this.id, "cslDir") as string;
     const cslPath = path.join(cslDir, `${name}.csl`);
     if (fs.existsSync(cslPath)) {
       const csl = fs.readFileSync(cslPath, "utf8");
