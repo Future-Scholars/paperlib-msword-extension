@@ -150,6 +150,14 @@ class PaperlibMSWordExtension extends PLExtension {
           value: "",
           order: 0,
         },
+        installed: {
+          type: "boolean",
+          name: "Installed",
+          description:
+            "Whether the extension is installed. Toggle to reinstall.",
+          value: false,
+          order: 1,
+        },
       },
     });
 
@@ -180,6 +188,23 @@ class PaperlibMSWordExtension extends PLExtension {
     );
 
     this.installWordAddin();
+
+    this.disposeCallbacks.push(
+      PLExtAPI.extensionPreferenceService.onChanged(
+        `${this.id}:installed`,
+        (newValue) => {
+          if (newValue.value.value === false) {
+            PLAPI.logService.info(
+              "Reinstalling Word Addin.",
+              "",
+              false,
+              "MSWordExt",
+            );
+            this.installWordAddin();
+          }
+        },
+      ),
+    );
 
     this.disposeCallbacks.push(() => {
       this._socketServer?.close();
@@ -232,7 +257,10 @@ class PaperlibMSWordExtension extends PLExtension {
   }
 
   private async _loadCSLNames() {
-    const cslDir = PLExtAPI.extensionPreferenceService.get(this.id, "cslDir") as string;
+    const cslDir = PLExtAPI.extensionPreferenceService.get(
+      this.id,
+      "cslDir",
+    ) as string;
 
     if (fs.existsSync(cslDir)) {
       const cslFiles = fs.readdirSync(cslDir);
@@ -261,7 +289,10 @@ class PaperlibMSWordExtension extends PLExtension {
   }
 
   private async _loadCSL(name: string) {
-    const cslDir = PLExtAPI.extensionPreferenceService.get(this.id, "cslDir") as string;
+    const cslDir = PLExtAPI.extensionPreferenceService.get(
+      this.id,
+      "cslDir",
+    ) as string;
     const cslPath = path.join(cslDir, `${name}.csl`);
     if (fs.existsSync(cslPath)) {
       const csl = fs.readFileSync(cslPath, "utf8");
@@ -272,6 +303,16 @@ class PaperlibMSWordExtension extends PLExtension {
   }
 
   async installWordAddin() {
+    const installed = PLExtAPI.extensionPreferenceService.get(
+      this.id,
+      "installed",
+    ) as boolean;
+    if (installed) {
+      return;
+    }
+
+    PLAPI.logService.info("Installing Word Addin.", "", false, "MSWordExt");
+
     const manifestUrl =
       "https://paperlib.app/distribution/word_addin/manifest.xml";
     const manifestPath = path.join(os.tmpdir(), "manifest.xml");
@@ -333,6 +374,8 @@ class PaperlibMSWordExtension extends PLExtension {
         "MSWordExt",
       );
     }
+
+    PLExtAPI.extensionPreferenceService.set(this.id, { installed: true });
   }
 }
 
